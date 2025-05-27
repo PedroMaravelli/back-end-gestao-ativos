@@ -1,4 +1,5 @@
 const db = require('../models');
+const rede = require('../models/rede');
 
 const mainController = {
     main: async (req,res) => {
@@ -76,6 +77,7 @@ const mainController = {
             const {
             nome,
             versao,
+            fornecedor,
             codigo_licenca,
             data_aquisicao,
             data_expiracao,
@@ -133,6 +135,57 @@ const mainController = {
             return res.status(500).json({ erro: 'Erro interno ao criar equipamento de rede.' });
         }
 
+    },
+    deletarRede: async (req,res) => {
+        try {
+            const { id } = req.params;
+
+            const rede = await db.rede.findByPk(id);
+
+            if (!rede) {
+            return res.status(404).json({ error: 'Rede não encontrada' });
+            }
+
+            await rede.destroy();
+            res.json({ message: 'Rede deletada com sucesso' });
+        } catch (error) {
+            console.error('Erro ao deletar rede:', error);
+            res.status(500).json({ error: 'Erro ao deletar rede' });
+        }
+    },
+    deletarSoftware: async (req,res) => {
+        try {
+            const { id } = req.params;
+
+            const Software = await db.software.findByPk(id);
+
+            if (!Software) {
+            return res.status(404).json({ error: 'software não encontrada' });
+            }
+
+            await Software.destroy();
+            res.json({ message: 'software deletada com sucesso' });
+        } catch (error) {
+            console.error('Erro ao deletar software:', error);
+            res.status(500).json({ error: 'Erro ao deletar software' });
+        }
+    },
+    deletarHardware: async (req,res) => {
+        try {
+            const { id } = req.params;
+
+            const hardware = await db.hardware.findByPk(id);
+
+            if (!hardware) {
+            return res.status(404).json({ error: 'hardware não encontrada' });
+            }
+
+            await hardware.destroy();
+            res.json({ message: 'hardware deletada com sucesso' });
+        } catch (error) {
+            console.error('Erro ao deletar hardware:', error);
+            res.status(500).json({ error: 'Erro ao deletar hardware' });
+        }
     },
 }
 
